@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Axios from 'axios';
 import styled from 'styled-components';
 import MovieComponent from './components/MovieComponent';
+import MovieInfoComponent from './components/MovieInfoComponent';
 
 
 export const API_KEY = "78c23083";
@@ -76,7 +77,11 @@ const Placeholder = styled.img`
 `;
 
 function App() {
+  const [searchQuery, setSearchQuery] = useState("");
+
   const [movieList, setMovieList] = useState([]);
+  const [selectedMovie, onMovieSelect] = useState();
+
   const [timeoutId, setTimeoutId] = useState();
 
   const fetchData = async (searchString) => {
@@ -87,7 +92,9 @@ function App() {
   };
   
   const onTextChange = (e) => {
+    onMovieSelect("")
     clearTimeout(timeoutId);
+    setSearchQuery(e.target.value);
     const timeout = setTimeout(() => fetchData(e.target.value), 500);
     setTimeoutId(timeout);
   };
@@ -102,16 +109,19 @@ function App() {
           <SearchIcon src='images/search-icon.svg' />
           <SearchInput 
             placeholder="Search Movie"
+            value={searchQuery}
             onChange={onTextChange}
           />
         </SearchBox>
       </Header>
+      {selectedMovie && <MovieInfoComponent selectedMovie={selectedMovie} onMovieSelect={onMovieSelect}/>}
       <MovieListContainer>
         {movieList?.length ? (
           movieList.map((movie, index) => (
             <MovieComponent
               key={index}
               movie={movie}
+              onMovieSelect={onMovieSelect}
             />
           ))
         ) : (
