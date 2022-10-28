@@ -4,6 +4,9 @@
 
 The app is deployed using Firebase.
 
+## Author 
+
+Tarık Bülbül
 ### APIs Used
 [The Open Movie Database APIs](https://www.omdbapi.com/)
 
